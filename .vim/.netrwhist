@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =4
+let g:netrw_dirhist_4='/afs/cri.epita.fr/user/l/lu/luc.desmottes/u/ING1/Piscine/EvalExpr/evalexpr/src'
+let g:netrw_dirhist_3='/afs/cri.epita.fr/user/l/lu/luc.desmottes/u/ING1/Piscine/MainRepo/fctptr_cmd'
+let g:netrw_dirhist_2='/home/luc.desmottes/Downloads'
+let g:netrw_dirhist_1='/afs/cri.epita.fr/user/l/lu/luc.desmottes/u/ING1/Piscine/repository/element_count'

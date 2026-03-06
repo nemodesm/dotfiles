@@ -1,0 +1,133 @@
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.zsh_history
+HISTSIZE=1000
+SAVEHIST=10000
+unsetopt autocd beep
+bindkey -v
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/nemodesm/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+#source /usr/share/doc/find-the-command/ftc.zsh quiet
+
+PROMPT="%B%F{green}[%f%F{cyan}%n%f%b%F{green}@%f%B%F{cyan}%m%f %2~%F{green}]%f%F{red}$%f%b "
+export PGDATA="$HOME/postgres_data"
+export PGHOST="/tmp"
+# ==== SQL ====
+run_request()
+{
+    if [ $# -eq 0 ]; then
+        echo "please give an input file"
+        return 1
+    fi
+    psql -f "$1" roger_roger
+    shift
+    if [ $# -gt 0 ]; then
+        run_request "$@"
+    fi
+}
+
+reset_db()
+{
+    if ! dropdb -U postgres roger_roger; then
+        echo "dropdb -U postgres roger_roger failed"
+        return
+    fi
+    if ! createdb -U postgres roger_roger; then
+        echo "createdb -U postgres roger_roger failed"
+        return
+    fi
+    if ! pg_restore -U postgres -O -d roger_roger ~/afs/ING1/SQL/roger_roger.dump; then
+        echo "pg_restore -U postgres -O -d roger_roger ~/afs/ING1/SQL/roger_roger.dump failed"
+    fi
+}
+
+alias cat="bat -p"
+alias ccat="/usr/bin/cat"
+alias icat="kitten icat"
+alias grep='grep --color -n'
+alias ls="ls --color=auto"
+alias treee="/usr/bin/tree"
+alias rrm="/usr/bin/rm"
+alias rm="/usr/bin/trash"
+
+alias gcc-a="gcc -std=c99 -pedantic -Werror -Wall -Wextra -Wvla *.c"
+
+mount_afs()
+{
+    mkdir -p ~/afs
+    sshfs -o reconnect luc.desmottes@ssh.cri.epita.fr:/afs/cri.epita.fr/user/l/lu/luc.desmottes/u/ ~/afs
+    if [ $? -eq 0 ]; then
+        return 1
+    fi
+    kinit -f luc.desmottes@CRI.EPITA.FR
+    #sftp luc.desmottes@ssh.cri.epita.fr
+    #cd /afs/cri.epita.fr/user/l/lu/luc.desmottes/u
+    sshfs -o reconnect luc.desmottes@ssh.cri.epita.fr:/afs/cri.epita.fr/user/l/lu/luc.desmottes/u/ ~/afs
+}
+
+tree()
+{
+    /usr/bin/tree "$@" -I ".git" | bat -p
+}
+
+header()
+{
+    echo "#ifndef ${1:u}_H\n#define ${1:u}_H\n\n\n\n#endif /* ! ${1:u}_H */" > "${1:l}.h"
+    vim "${1:l}.h"
+}
+
+clean-trailing-whitespace()
+{
+    sed -i -E ':s;N;$!bs;s/\s+\n/\n/g' "$1"
+}
+
+screensaver()
+{
+    if [ $((1 + $RANDOM % 42)) -eq 42 ]; then
+        #hollywood
+    fi
+    if [ $((1 + $RANDOM % 4)) -eq 1 ]; then
+        rainfall
+    elif [ $((1 + $RANDOM % 3)) -eq 1 ]; then
+        cmatrix
+    elif [ $((1 + $RANDOM % 2)) -eq 1 ]; then
+        asciiquarium
+    else
+        nyancat
+    fi
+}
+
+mo2()
+{
+    if [ $# -gt 1 ]; then
+        printf "usage: %s [app_id]" "$0" 1>&2
+        return 1
+    fi
+
+    program="$HOME/programs/Mod.Organizer-2.5.2.exe"
+    appid=$1
+
+    if [ $# -eq 0 ]; then
+        ifs_bak=$IFS
+        IFS=$'\n'
+        appid=$(protontricks -l | grep "$(gum filter $(protontricks -l | command grep '(' | sed 's/\([^()]*\) ([0-9]*)/\1/') | tr -d '\n')" | sed 's/[^(]*(\([0-9]*\))/\1/')
+        IFS=$ifs_bak
+    fi
+
+    if [ -z $appid ]; then
+        printf "error getting appid\n" 1>&2
+        return 2
+    fi
+
+    protontricks-launch --appid "$appid" ~/programs/ModOrganizer2/ModOrganizer.exe > /dev/null
+}
+
+alias remount-afs="umount ~/afs && mount_afs"
+
+# Created by `pipx` on 2025-12-07 15:19:05
+export PATH="$PATH:/home/nemodesm/.local/bin"
