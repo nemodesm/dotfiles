@@ -131,3 +131,5 @@ alias remount-afs="umount ~/afs && mount_afs"
 
 # Created by `pipx` on 2025-12-07 15:19:05
 export PATH="$PATH:/home/nemodesm/.local/bin"
+
+if [ -e /home/nemodesm/.nix-profile/etc/profile.d/nix.sh ]; then . /home/nemodesm/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
