@@ -5,6 +5,9 @@ alias cat="bat -p"
 alias grep='grep --color -n'
 alias ls="ls --color=auto"
 
+# === Shorthands ===
+alias nv="nvim"
+
 # === Platform Agnostic
 alias edit="vim"
 
@@ -23,19 +26,6 @@ relog()
 tree()
 {
     command tree "$@" -I ".git" | bat -p
-}
-
-# TODO: should this be in git.sh?
-git() {
-    if [ $# -eq 0 ]; then
-        command git
-        return $?
-    fi
-
-    case "$1" in
-        *)
-            command git "$@"
-    esac
 }
 
 where() {

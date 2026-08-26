@@ -1,6 +1,9 @@
 # Hypr plugins
 config/hypr/plugins
 
+# Cache
+config/nvim/nvim-pack-lock.json
+
 # Matugen Theming
 config/kitty/colors.conf
 config/hypr/colors.lua

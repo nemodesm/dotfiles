@@ -1,12 +1,80 @@
 #!/bin/sh
 
-alias s='git status'
-alias a='fmt *.c && git add .'
-alias ga="git add ."
-alias c='git commit -m'
-alias t='git tag -ma'
-alias p='git push'
-alias pt='git push --follow-tags'
+# alias s='git status'
+# alias a='fmt *.c && git add .'
+# alias ga="git add ."
+# alias c='git commit -m'
+# alias t='git tag -ma'
+# alias p='git push'
+# alias pt='git push --follow-tags'
+
+git()
+{
+    if [ $# -eq 0 ]; then
+        command git
+        return $?
+    fi
+
+    case "$1" in
+        "switch")
+            if [ $# -eq 1 ]; then
+                branches=$(command git for-each-ref --format='%(refname:short)' refs/heads refs/remotes | sed 's|^origin/||' | sort -u)
+
+                to_branch="$(gum choose <<< "$branches")"
+
+                if [ $? -ne 0 ]; then
+                    return 1
+                fi
+
+                command git switch "$to_branch"
+                return $?
+            else
+                shift
+                command git switch "$@"
+                return $?
+            fi
+            ;;
+        "commit")
+            if [ $# -eq 1 ]; then
+                message="$(gum input --placeholder "Commit message")"
+                if [ $? -ne 0 ]; then
+                    return 1
+                fi
+
+                if gum confirm --default=0 "Write description?"; then
+                    desc="$(gum write --placeholder "Description...")"
+                    if [ $? -ne 0 ]; then
+                        return 1
+                    fi
+
+                    command git commit -m "$message" -m "$desc"
+                    return $?
+                else
+                    command git commit -m "$message"
+                    return $?
+                fi
+            else
+                shift
+                command git commit "$@"
+                return $?
+            fi
+            ;;
+        "log")
+            if [ $# -eq 1 ]; then
+                command git log --graph
+                return $?
+            else
+                shift
+                command git log "$@"
+                return $?
+            fi
+            ;;
+        *) 
+            command git "$@"
+            return $?
+            ;;
+    esac
+}
 
 cc()
 {
