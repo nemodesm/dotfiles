@@ -7,8 +7,16 @@ function change_theme()
     return 1
 }
 
-export THEME_COLOR_BACKGROUND='#212121'
-export THEME_COLOR_ACCENT='#FF8800'
+matugen()
+{
+    if [ $# -eq 0 ]; then
+        local col="$(gum choose "$(color "#007795")#007795" "$(color "#b0503f")#b0503f")"
+        if ! [ -z "$col" ]; then
+            matugen color hex "$col"
+        fi
+    else
+        command matugen "$@"
+    fi
+}
 
-export GUM_INPUT_CURSOR_FOREGROUND="$THEME_COLOR_ACCENT"
-export GUM_INPUT_PROMPT_FOREGROUND="#0FF"
+source "${SHELL_CONFIG_PATH}/theme/gum.sh"

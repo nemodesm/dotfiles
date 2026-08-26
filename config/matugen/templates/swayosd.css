@@ -1,6 +1,6 @@
 window#osd {
   border-radius: 15px;
-  background: #3d200788;
+  background: {{colors.primary_container.default.hex}};
 }
 
 window#osd:before {
@@ -25,7 +25,7 @@ window#osd image {
 
 window#osd image,
 window#osd label {
-  color: #ed720e;
+  color: {{colors.primary.default.hex}};
 }
 
 window#osd progressbar:disabled,
@@ -51,5 +51,5 @@ window#osd progress {
   min-height: inherit;
   border-radius: inherit;
   border: none;
-  background: #ed720e;
+  background: {{colors.primary.default.hex}};
 }

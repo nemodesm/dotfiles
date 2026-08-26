@@ -1,0 +1,9 @@
+# Hypr plugins
+config/hypr/plugins
+
+# Matugen Theming
+config/kitty/colors.conf
+config/hypr/colors.lua
+config/shellinit/theme/gum.sh
+config/swayosd/style.css
+config/mako/config

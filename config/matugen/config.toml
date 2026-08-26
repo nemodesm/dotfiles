@@ -1,0 +1,35 @@
+[config]
+
+[templates.hyprland]
+input_path = './templates/hyprland.lua'
+output_path = '~/.config/hypr/colors.lua'
+
+[templates.kitty]
+input_path = './templates/kitty.conf'
+output_path = '~/.config/kitty/colors.conf'
+post_hook = 'pkill -SIGUSR1 kitty'
+
+# does not reload automatically, must manually reload theme or relaunch app
+[templates.prismlauncher]
+input_path = './templates/prismlauncher.json'
+output_path = '~/.local/share/PrismLauncher/themes/matugen-dark/theme.json'
+
+# does not auto reload, the commented post-hook kinda works as in setsid does
+# not block interactive terminal input but shell does not exit while it's
+# command is running, running job in background and disown-ing the job does not
+# seem to work either
+[templates.swayosd]
+input_path = './templates/swayosd.css'
+output_path = '~/.config/swayosd/style.css'
+# post_hook = 'bash -c "pkill -x swayosd-server; setsid swayosd-server > /dev/null 2>&1"'
+
+[templates.gum]
+input_path = './templates/gum.sh'
+output_path = '~/.config/shellinit/theme/gum.sh'
+# this config auto reloads shell scripts so, while active `gum` commands will
+# not refresh, the next time gum is invoked it will inherit the new colors
+
+[templates.mako]
+input_path = './templates/mako'
+output_path = '~/.config/mako/config'
+post_hook = 'makoctl reload'

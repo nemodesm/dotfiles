@@ -1,0 +1,35 @@
+sort=-time
+layer=overlay
+background-color={{colors.on_secondary.default.hex}}
+width=300
+border-size=2
+border-color={{colors.outline.default.hex}}
+# match hyprland border radius
+border-radius=10
+max-icon-size=64
+default-timeout=5000
+ignore-timeout=1
+font=monospace 10
+
+[urgency=low]
+border-color={{colors.outline_variant.default.hex}}
+
+[urgency=normal]
+# border-color=#cccccc
+
+[urgency=high]
+border-color={{colors.error.default.hex}}
+default-timeout=0
+
+[category=mpd]
+default-timeout=2000
+group-by=category
+
+# == Mode: Away ==
+[mode=away]
+default-timeout=0
+ignore-timeout=1
+
+# == Mode: Do Not Disturb ==
+[mode=do-not-disturb]
+invisible=1
