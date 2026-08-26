@@ -1,9 +1,15 @@
 #!/bin/sh
 
-source "$(dirname "$0")/debug.sh"
+if ! [ -z "$ZSH_NAME" ]; then
+    export SHELL_CONFIG_PATH="${0:A:h}"
+else
+    export SHELL_CONFIG_PATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+fi
+
+source "${SHELL_CONFIG_PATH}/debug.sh"
 
 if [ -z "${WATCHER_PID}" ]; then
-    source "$(dirname "$0")/01_variables.sh"
+    source "${SHELL_CONFIG_PATH}/01_variables.sh"
 fi
 
 case "$XDG_SESSION_TYPE" in
@@ -57,9 +63,10 @@ source "${SHELL_CONFIG_PATH}/steam.sh"
 source "${SHELL_CONFIG_PATH}/qol.sh"
 source "${SHELL_CONFIG_PATH}/nix.sh"
 source "${SHELL_CONFIG_PATH}/program-wrappers.sh"
+source "${SHELL_CONFIG_PATH}/program-replacements.sh"
 
 # setup file watcher
-function __cleanup()
+__cleanup()
 {
     if is_dev; then
         kill "${WATCHER_PID}" 2> ~/err_exit 1> ~/std_exit

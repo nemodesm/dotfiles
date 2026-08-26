@@ -1,8 +1,8 @@
 PS1='\[\e[32;1m\][\[\e[36m\]\u\[\e[0;32m\]@\[\e[36;1m\]\h\[\e[0m\] \[\e[37;1m\]\W\[\e[32m\]]\[\e[91m\]\$\[\e[0m\] '
 #PS1="\\[\\e[32;1m\\][\\[\\e[36m\\]\\u\\[\\e[0;32m\\]@\\[\\e[36;1m\\]\\h\\[\\e[0m\\] \\[\\e[37;1m\\]\\W\\[\\e[32m\\]]\\[\\e[9${SHLVL}m\\]\\\$\\[\\e[0m\\] "
 
-bash ~/.config/shellinit/.init.sh
-# source ~/.shrc
+source ~/.config/shellinit/.init.sh
+#source ~/.shrc
 
 header() {
     if ! [ -f "${1,,}.h" ]; then
