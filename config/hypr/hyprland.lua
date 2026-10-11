@@ -40,7 +40,6 @@ local fileManager = "dolphin"
 local menu = "rofi -show drun"
 --local menu        = "hyprlauncher"
 
-
 package.path = package.path .. ";./?.lua;./?/init.lua"
 local smw = require("plugins.split-monitor-workspaces")
 smw.setup({
@@ -111,6 +110,19 @@ hl.permission("/usr/(bin|local/bin)/hyprlock", "screencopy", "allow")
 -----------------------
 
 -- Refer to https://wiki.hypr.land/Configuring/Basics/Variables/
+if hl.plugin.hy3 ~= nil then
+    hl.config({
+        general = {
+            layout = "hy3"
+        }
+    })
+else
+    hl.config({
+        general = {
+            layout = "dwindle"
+        }
+    })
+end
 hl.config({
     general = {
         gaps_in  = 5,
@@ -297,6 +309,17 @@ hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 
 -- Move focus with mainMod + arrow keys
+if hl.plugin.hy3 == nil then
+    hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
+    hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
+    hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }))
+    hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
+
+    hl.bind(mainMod .. " + SHIFT + left",  hl.dsp.window.move({ direction = "left" }))
+    hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ direction = "right" }))
+    hl.bind(mainMod .. " + SHIFT + up",    hl.dsp.window.move({ direction = "up" }))
+    hl.bind(mainMod .. " + SHIFT + down",  hl.dsp.window.move({ direction = "down" }))
+else
 hl.bind(mainMod .. " + left",  hl.plugin.hy3.move_focus("left"))
 hl.bind(mainMod .. " + right", hl.plugin.hy3.move_focus("right"))
 hl.bind(mainMod .. " + up",    hl.plugin.hy3.move_focus("up" ))
@@ -306,6 +329,7 @@ hl.bind(mainMod .. " + SHIFT + left",  hl.plugin.hy3.move_window("left"))
 hl.bind(mainMod .. " + SHIFT + right", hl.plugin.hy3.move_window("right"))
 hl.bind(mainMod .. " + SHIFT + up",    hl.plugin.hy3.move_window("up" ))
 hl.bind(mainMod .. " + SHIFT + down",  hl.plugin.hy3.move_window("down"))
+end
 
 -- Switch workspaces with mainMod + [0-9]
 -- Move active window to a workspace with mainMod + SHIFT + [0-9]
