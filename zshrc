@@ -8,7 +8,8 @@ PROMPT="%B%F{green}[%F{cyan}%n%b%F{green}@%B%F{cyan}%m%f %2~%F{green}]%F{red}$%f
 bindkey "\e[3~" delete-char
 
 source ~/.config/shellinit/.init.sh
-# source ~/.shrc
+[ -s "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
+[ -s "$HOME/.shrc.local" ] && source "$HOME/.shrc.local"
 
 header() {
     if ! [ -f "${1:l}.h" ]; then
@@ -18,20 +19,7 @@ header() {
 }
 
 alias reload="source ~/.zshrc"
-export PGDATA="$HOME/postgres_data"
-export PGHOST="/tmp"
-export PGPORT="5432"
-
-start_wallpaper()
-{
-    hyprpaper &
-    /home/nemodesm/programs/walltaker-client/walltaker.sh &
-}
 
 return
 '''
-
-
-
-
 return

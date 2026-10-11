@@ -2,7 +2,8 @@ PS1='\[\e[32;1m\][\[\e[36m\]\u\[\e[0;32m\]@\[\e[36;1m\]\h\[\e[0m\] \[\e[37;1m\]\
 #PS1="\\[\\e[32;1m\\][\\[\\e[36m\\]\\u\\[\\e[0;32m\\]@\\[\\e[36;1m\\]\\h\\[\\e[0m\\] \\[\\e[37;1m\\]\\W\\[\\e[32m\\]]\\[\\e[9${SHLVL}m\\]\\\$\\[\\e[0m\\] "
 
 source ~/.config/shellinit/.init.sh
-#source ~/.shrc
+[ -s "$HOME/.bashrc.local" ] && source "$HOME/.bashrc.local"
+[ -s "$HOME/.shrc.local" ] && source "$HOME/.shrc.local"
 
 header() {
     if ! [ -f "${1,,}.h" ]; then
@@ -15,8 +16,4 @@ alias reload="source ~/.bashrc"
 
 return
 '''
-
-
-
-
 return
