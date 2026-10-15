@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#export SHELL_CONFIG_PATH="$(dirname "$0")"
+#export SHELL_SCRIPT_PATH="$(dirname "$0")"
 export SHELL_ACTIVE_NAME="UNKNOWN"
 export SHELL_ACTIVE_PATH="UNKNOWN"
 

@@ -1,69 +1,69 @@
 #!/bin/sh
 
 if ! [ -z "$ZSH_NAME" ]; then
-    export SHELL_CONFIG_PATH="${0:A:h}"
+    export SHELL_SCRIPT_PATH="${0:A:h}"
 else
-    export SHELL_CONFIG_PATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+    export SHELL_SCRIPT_PATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 fi
 
-source "${SHELL_CONFIG_PATH}/debug.sh"
+source "${SHELL_SCRIPT_PATH}/debug.sh"
 
 if [ -z "${WATCHER_PID}" ]; then
-    source "${SHELL_CONFIG_PATH}/01_variables.sh"
+    source "${SHELL_SCRIPT_PATH}/01_variables.sh"
 fi
 
 case "$XDG_SESSION_TYPE" in
-    x11)
+    (x11)
         dev_log "Running graphics server (x11) scripts"
-        source "${SHELL_CONFIG_PATH}/graphics-server/x11.sh"
+        source "${SHELL_SCRIPT_PATH}/graphics-server/x11.sh"
         ;;
-    *)
+    (*)
         dev_log "No graphics server ($XDG_SESSION_TYPE) scripts"
         ;;
 esac
 
 case "$XDG_CURRENT_DESKTOP" in
-    Hyprland)
+    (Hyprland)
         dev_log "Running desktop environment (Hyprland) scripts"
-        source "${SHELL_CONFIG_PATH}/desktop-specific/hyprland.sh"
+        source "${SHELL_SCRIPT_PATH}/desktop-specific/hyprland.sh"
         ;;
-    *)
+    (*)
         dev_log "No desktop environment ($XDG_CURRENT_DESKTOP) scripts"
         ;;
 esac
 
 case "$(hostname)" in
-    hel)
+    (hel)
         dev_log "Running computer (hel) scripts"
-        source "${SHELL_CONFIG_PATH}/computer-specific/hel.sh"
+        source "${SHELL_SCRIPT_PATH}/computer-specific/hel.sh"
         ;;
-    *.sm.cri.epita.fr)
+    (*.sm.cri.epita.fr)
         dev_log "Running computer (cri.epita.fr) scripts (matches *.sm.cri.epita.fr: $(hostname))"
-        source "${SHELL_CONFIG_PATH}/computer-specific/cri.epita.fr.sh"
+        source "${SHELL_SCRIPT_PATH}/computer-specific/cri.epita.fr.sh"
         ;;
-    *)
+    (*)
         dev_log "No computer ($(hostname)) scripts"
         ;;
 esac
 
 case "$TERM" in
-    *kitty)
+    (*kitty)
         dev_log "Running terminal emulator (kitty) scripts"
-        source "${SHELL_CONFIG_PATH}/term-emulator/kitty.sh"
+        source "${SHELL_SCRIPT_PATH}/term-emulator/kitty.sh"
         ;;
-    *)
+    (*)
         dev_log "No terminal emulator ($TERM) scripts"
         ;;
 esac
 
-source "${SHELL_CONFIG_PATH}/theme.sh"
-source "${SHELL_CONFIG_PATH}/common.sh"
-source "${SHELL_CONFIG_PATH}/git.sh"
-source "${SHELL_CONFIG_PATH}/steam.sh"
-source "${SHELL_CONFIG_PATH}/qol.sh"
-source "${SHELL_CONFIG_PATH}/nix.sh"
-source "${SHELL_CONFIG_PATH}/program-wrappers.sh"
-source "${SHELL_CONFIG_PATH}/program-replacements.sh"
+source "${SHELL_SCRIPT_PATH}/theme.sh"
+source "${SHELL_SCRIPT_PATH}/common.sh"
+source "${SHELL_SCRIPT_PATH}/git.sh"
+source "${SHELL_SCRIPT_PATH}/steam.sh"
+source "${SHELL_SCRIPT_PATH}/qol.sh"
+source "${SHELL_SCRIPT_PATH}/nix.sh"
+source "${SHELL_SCRIPT_PATH}/program-wrappers.sh"
+source "${SHELL_SCRIPT_PATH}/program-replacements.sh"
 
 # setup file watcher
 __cleanup()
@@ -77,11 +77,11 @@ __cleanup()
 
 if [ -z "$WATCHER_RUNNING" ] && [ -z "$WATCHER_PID" ]; then
     dev_log "Started file watcher"
-    trap "dev_log \"Reloaded config\"; source \"${SHELL_CONFIG_PATH}/.init.sh\"" USR1
+    trap "dev_log \"Reloaded config\"; source \"${SHELL_SCRIPT_PATH}/.init.sh\"" USR1
     trap __cleanup EXIT
 
     set +m
-    source "${SHELL_CONFIG_PATH}/watch.sh" 1>&2 2>/dev/null &
+    source "${SHELL_SCRIPT_PATH}/watch.sh" 1>&2 2>/dev/null &
     WATCHER_PID=$!
     disown
     set -m

@@ -19,4 +19,4 @@ matugen()
     fi
 }
 
-source "${SHELL_CONFIG_PATH}/theme/gum.sh"
+source "${SHELL_SCRIPT_PATH}/theme/gum.sh"
