@@ -17,6 +17,10 @@ case "$XDG_SESSION_TYPE" in
         dev_log "Running graphics server (x11) scripts"
         source "${SHELL_SCRIPT_PATH}/graphics-server/x11.sh"
         ;;
+    (wayland)
+        dev_log "Running graphics server (wayland) scripts"
+        source "${SHELL_SCRIPT_PATH}/graphics-server/wayland.sh"
+        ;;
     (*)
         dev_log "No graphics server ($XDG_SESSION_TYPE) scripts"
         ;;
