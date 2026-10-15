@@ -3,12 +3,25 @@
 set -e
 set -u
 
+is_dev()
+{
+    if [ "${DEBUG_ENV:-}" = "true" ]; then
+        return 0
+    fi
+    return 1
+}
+
 echo "Installing dotfiles to '${DOTFILES_INSTALL_PATH:="$HOME/.dotfiles"}'"
 
 # If detected to not have been invoked locally (e.g.: curl | bash)
 if ! [ -f "$0" ]; then
-    git clone git@github.com:nemodesm/dotfiles.git "$DOTFILES_INSTALL_PATH"
-    "$DOTFILES_INSTALL_PATH/install.sh"
+    if is_dev; then
+        echo "Would clone 'https://github.com/nemodesm/dotfiles.git' to '$DOTFILES_INSTALL_PATH'"
+        exit 1
+    fi
+
+    git clone https://github.com/nemodesm/dotfiles.git "$DOTFILES_INSTALL_PATH"
+    DOTFILES_INSTALL_PATH="$DOTFILES_INSTALL_PATH" "$DOTFILES_INSTALL_PATH/install.sh"
     exit $?
 fi
 
@@ -19,7 +32,9 @@ dotfiles="bashrc vimrc zshrc"
 dotdirs="config"
 
 # in the format program=package_name
-declare -A required_progs=([hostname]=inetutils [gum]=gum)
+# TODO: package names are given for arch linux, should work on getting the
+# install script to work on other platforms
+declare -A required_progs=([hostname]=inetutils [gum]=gum [bat]=bat [bc]=bc)
 
 is_prog_installed()
 {
@@ -33,6 +48,11 @@ is_prog_installed()
 install_prog()
 {
     echo "Installing package '$1'"
+
+    if is_dev; then
+        return
+    fi
+
     case "$(lsb_release -si)" in
         ("Arch")
             sudo pacman -S "$1"
@@ -51,15 +71,22 @@ ln_safe()
 
     if [ -e "$2" ]; then
         if [ "$(readlink -f "$2")" = "$1" ]; then
-            # echo "'$2' is already properly installed, skipping"
+            echo "'$2' is already properly installed, skipping"
             return
         fi
 
         # not from a previous install, make a backup
         echo "'$2' already exists, moving existing version to '$2-$(date -I).bak'"
-        mv "$2" "${2}-$(date -I).bak"
+    
+        if ! is_dev; then
+            mv "$2" "${2}-$(date -I).bak"
+        fi
     fi
 
+    if is_dev; then
+        echo "'$2' linked to, '$1'"
+        return
+    fi
     ln -s "$1" "$2"
 }
 
@@ -79,5 +106,10 @@ do
         install_prog "${required_progs[$exe]}"
     fi
 done
+
+if ! is_dev; then
+    # generate initial neutral color scheme
+    matugen color hex '#212121' -t scheme-neutral
+fi
 
 popd >/dev/null
