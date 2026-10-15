@@ -1,9 +1,19 @@
+#
+# ~/.zshrc
+#
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# Save command history
+HISTFILE=~/.zsh_history
+HISTSIZE=1000
+SAVEHIST=10000
+
 autoload -Uz compinit
 compinit
 
 PROMPT="%B%F{green}[%F{cyan}%n%b%F{green}@%B%F{cyan}%m%f %2~%F{green}]%F{red}$%f%b "
-# PROMPT="%B%F{green}[%f%F{cyan}%n%f%b%F{green}@%f%B%F{cyan}%m%f %2~%F{green}]%f%F{red}$%f%b "
-# RPROMPT="%?"
 
 bindkey "\e[3~" delete-char
 
