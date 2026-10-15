@@ -22,15 +22,11 @@ case "$XDG_SESSION_TYPE" in
         ;;
 esac
 
-case "$XDG_CURRENT_DESKTOP" in
-    (Hyprland)
-        dev_log "Running desktop environment (Hyprland) scripts"
-        source "${SHELL_SCRIPT_PATH}/desktop-specific/hyprland.sh"
-        ;;
-    (*)
-        dev_log "No desktop environment ($XDG_CURRENT_DESKTOP) scripts"
-        ;;
-esac
+# case "$XDG_CURRENT_DESKTOP" in
+#     (*)
+#         dev_log "No desktop environment ($XDG_CURRENT_DESKTOP) scripts"
+#         ;;
+# esac
 
 case "$(hostname)" in
     (hel)
