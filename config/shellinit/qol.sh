@@ -18,11 +18,6 @@ alias treee="command tree"
 # === Simpler names ===
 alias untar="tar -xf"
 
-relog()
-{
-    kinit && aklog
-}
-
 tree()
 {
     command tree "$@" -I ".git" | bat -p
